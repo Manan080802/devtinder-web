@@ -185,180 +185,193 @@ const Login = () => {
   };
 
   return (
-    <>
-      {errors.backend && (
-        <div className="alert alert-error mb-4 text-sm text-white">
-          {errors.backend}
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
+      <div className="w-full max-w-md bg-base-300 rounded-2xl shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="bg text-white py-5 text-center">
+          <h2 className="text-2xl font-bold">
+            {isRegister ? "Create Account" : "Welcome Back"}
+          </h2>
+          <p className="text-sm opacity-80">
+            {isRegister
+              ? "Join us today, it’s quick & easy"
+              : "Login to continue"}
+          </p>
         </div>
-      )}
 
-      <div className="flex justify-center items-center min-h-screen bg-base-200">
-        <div className="card w-[450px] bg-base-300 shadow-xl">
-          <form
-            onSubmit={handleSubmit}
-            className="card-body space-y-4 max-h-[500px] overflow-y-auto"
-          >
-            <h2 className="card-title text-2xl font-bold text-center bg-base-300 py-2">
-              {isRegister ? "Sign Up" : "Sign In"}
-            </h2>
+        {/* Body */}
+        <form
+          onSubmit={handleSubmit}
+          className="p-6 space-y-4 max-h-[550px] overflow-y-auto"
+        >
+          {errors.backend && (
+            <div className="alert alert-error text-sm text-white">
+              {errors.backend}
+            </div>
+          )}
 
-            {isRegister && (
-              <>
-                {/* First & Last Name */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="label">First Name</label>
-                    <input
-                      type="text"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleChange}
-                      className="input input-bordered w-full"
-                    />
-                    {errors.firstName && (
-                      <p className="text-red-500 text-sm">{errors.firstName}</p>
-                    )}
-                  </div>
-                  <div>
-                    <label className="label">Last Name</label>
-                    <input
-                      type="text"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleChange}
-                      className="input input-bordered w-full"
-                    />
-                    {errors.lastName && (
-                      <p className="text-red-500 text-sm">{errors.lastName}</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Gender */}
+          {isRegister && (
+            <>
+              {/* First & Last Name */}
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="label">Gender</label>
-                  <select
-                    name="gender"
-                    value={formData.gender}
-                    onChange={handleChange}
-                    className="select select-bordered w-full"
-                  >
-                    <option value="">Select gender</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                  {errors.gender && (
-                    <p className="text-red-500 text-sm">{errors.gender}</p>
-                  )}
-                </div>
-
-                {/* Skills */}
-                <div>
-                  <label className="label">Skills</label>
-                  <div className="flex gap-2 mb-2 flex-wrap">
-                    {skill.map((skill, i) => (
-                      <span
-                        key={i}
-                        className="badge badge-primary gap-2 py-3 px-2 text-sm"
-                      >
-                        {skill}
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveSkill(skill)}
-                          className="ml-1 text-white hover:text-red-400"
-                        >
-                          ✕
-                        </button>
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex gap-2">
-                    <input
-                      type="text"
-                      value={skillInput}
-                      onChange={(e) => setSkillInput(e.target.value)}
-                      placeholder="Enter a skill"
-                      className="input input-bordered w-full"
-                    />
-                    <button
-                      onClick={handleAddSkill}
-                      className="btn btn-sm btn-secondary"
-                    >
-                      Add
-                    </button>
-                  </div>
-                  {errors.skills && (
-                    <p className="text-red-500 text-sm">{errors.skills}</p>
-                  )}
-                </div>
-
-                {/* DOB */}
-                <div>
-                  <label className="label">Date of Birth</label>
+                  <label className="label text-sm">First Name</label>
                   <input
-                    type="date"
-                    name="dob"
-                    value={formData.dob}
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
                     onChange={handleChange}
                     className="input input-bordered w-full"
-                    max={new Date().toISOString().split("T")[0]}
                   />
-                  {errors.dob && (
-                    <p className="text-red-500 text-sm">{errors.dob}</p>
+                  {errors.firstName && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.firstName}
+                    </p>
                   )}
                 </div>
-              </>
+                <div>
+                  <label className="label text-sm">Last Name</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className="input input-bordered w-full"
+                  />
+                  {errors.lastName && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.lastName}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Gender */}
+              <div>
+                <label className="label text-sm">Gender</label>
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="select select-bordered w-full"
+                >
+                  <option value="">Select gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+                {errors.gender && (
+                  <p className="text-red-500 text-xs mt-1">{errors.gender}</p>
+                )}
+              </div>
+
+              {/* Skills */}
+              <div>
+                <label className="label text-sm">Skills</label>
+                <div className="flex gap-2 mb-2 flex-wrap">
+                  {skill.map((s, i) => (
+                    <span
+                      key={i}
+                      className="badge badge-primary py-2 px-3 text-sm flex items-center"
+                    >
+                      {s}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveSkill(s)}
+                        className="ml-2 hover:text-red-300"
+                      >
+                        ✕
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={skillInput}
+                    onChange={(e) => setSkillInput(e.target.value)}
+                    placeholder="Enter a skill"
+                    className="input input-bordered w-full"
+                  />
+                  <button
+                    onClick={handleAddSkill}
+                    className="btn btn-secondary"
+                  >
+                    Add
+                  </button>
+                </div>
+                {errors.skills && (
+                  <p className="text-red-500 text-xs mt-1">{errors.skills}</p>
+                )}
+              </div>
+
+              {/* DOB */}
+              <div>
+                <label className="label text-sm">Date of Birth</label>
+                <input
+                  type="date"
+                  name="dob"
+                  value={formData.dob}
+                  onChange={handleChange}
+                  className="input input-bordered w-full"
+                  max={new Date().toISOString().split("T")[0]}
+                />
+                {errors.dob && (
+                  <p className="text-red-500 text-xs mt-1">{errors.dob}</p>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* Email */}
+          <div>
+            <label className="label text-sm">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">{errors.email}</p>
             )}
+          </div>
 
-            {/* Email */}
-            <div>
-              <label className="label">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
-              )}
-            </div>
+          {/* Password */}
+          <div>
+            <label className="label text-sm">Password</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="input input-bordered w-full"
+            />
+            {errors.password && (
+              <p className="text-red-500 text-xs mt-1">{errors.password}</p>
+            )}
+          </div>
 
-            {/* Password */}
-            <div>
-              <label className="label">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="input input-bordered w-full"
-              />
-              {errors.password && (
-                <p className="text-red-500 text-sm">{errors.password}</p>
-              )}
-            </div>
+          {/* Submit */}
+          <button type="submit" className="btn btn-primary w-full mt-2">
+            {isRegister ? "Sign Up" : "Sign In"}
+          </button>
 
-            <button type="submit" className="btn btn-primary w-full">
-              {isRegister ? "Sign Up" : "Sign In"}
+          {/* Toggle */}
+          <p className="text-sm text-gray-400 text-center mt-3">
+            {isRegister ? "Already have an account? " : "New here? "}
+            <button
+              type="button"
+              className="text-primary font-medium hover:underline"
+              onClick={() => setRegister(!isRegister)}
+            >
+              Sign {isRegister ? "In" : "Up"} now
             </button>
-
-            <p className="text-sm text-gray-400 text-center">
-              {isRegister ? "Already have an account? " : "New here? "}
-              <button
-                type="button"
-                className="text-white hover:underline"
-                onClick={() => setRegister(!isRegister)}
-              >
-                Sign {isRegister ? "In" : "Up"} now
-              </button>
-            </p>
-          </form>
-        </div>
+          </p>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 

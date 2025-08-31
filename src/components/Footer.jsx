@@ -4,7 +4,7 @@ import logo from "../assets/devtinderlog.png";
 const Footer = () => {
   return (
     <div>
-      <footer className="fixed bottom-0 footer sm:footer-horizontal bg-base-300 text-neutral-content items-center p-4">
+      <footer className=" footer sm:footer-horizontal bg-base-300 text-neutral-content items-center p-4">
         <aside className="grid-flow-col items-center">
           <img src={logo} alt="Logo" className="h-10 md:h-12 object-contain" />
           <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
