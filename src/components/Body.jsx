@@ -1,18 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
+
+import useFetchUser from "../utils/useFetchUser";
 
 const Body = () => {
-  const userData = useSelector((state) => state.user);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!userData) navigate("/login");
-  }, []);
+  useFetchUser();
 
   return (
     <div>

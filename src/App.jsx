@@ -20,6 +20,10 @@ function App() {
           path: "/login",
           element: <Login />,
         },
+        {
+          path: "/feed",
+          element: <h1>Hello world</h1>,
+        },
       ],
     },
   ]);
