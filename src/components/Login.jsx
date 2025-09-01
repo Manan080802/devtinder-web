@@ -3,7 +3,6 @@ import api from "../axios/api";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../utils/userSlice";
-import useFetchUser from "../utils/useFetchUser";
 
 const Login = () => {
   const [isRegister, setRegister] = useState(false);
@@ -12,7 +11,6 @@ const Login = () => {
   const navigate = useNavigate();
   const disPatch = useDispatch();
   const userData = useSelector((state) => state.user);
-  useFetchUser();
 
   useEffect(() => {
     if (userData) navigate("/");
