@@ -161,8 +161,9 @@ const Login = () => {
           { ...formData, skill },
           { withCredentials: true }
         );
-        alert("✅ Signup successful!");
-        console.log("result", result.data);
+        disPatch(addUser(result.data.result));
+
+        navigate("/");
       } else {
         const result = await api.post(
           "/auth/login",

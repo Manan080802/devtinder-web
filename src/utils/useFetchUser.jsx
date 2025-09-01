@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +25,6 @@ const useFetchUser = () => {
 
         dispatch(addUser(response?.data?.result));
       } catch (error) {
-        console.error(error);
         navigate("/login");
       }
     };

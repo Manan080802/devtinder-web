@@ -1,10 +1,25 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/devtinderlog.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removeUser } from "../utils/userSlice";
+import api from "../axios/api";
 
 function Header() {
   const userData = useSelector((state) => state.user);
+  const disPatch = useDispatch();
+  const navigate = useNavigate();
+  const logOut = async () => {
+    try {
+      await api.get("/auth/logout", { withCredentials: true });
+      disPatch(removeUser());
+      navigate("/login");
+    } catch (error) {
+      disPatch(removeUser());
+      navigate("/login");
+    }
+  };
   return (
     <div>
       <div className="navbar bg-base-300 shadow-sm">
@@ -51,7 +66,13 @@ function Header() {
                   <a>Settings</a>
                 </li>
                 <li>
-                  <a>Logout</a>
+                  <Link
+                    onClick={() => {
+                      logOut();
+                    }}
+                  >
+                    Logout
+                  </Link>
                 </li>
               </ul>
             </div>
