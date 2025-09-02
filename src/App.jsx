@@ -4,6 +4,7 @@ import Body from "./components/Body";
 import Login from "./components/Login";
 import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
+import Feed from "./components/Feed";
 
 function App() {
   const appRouter = createBrowserRouter([
@@ -14,7 +15,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <div>MainContainer</div>,
+          element: <Feed></Feed>,
         },
         {
           path: "/login",

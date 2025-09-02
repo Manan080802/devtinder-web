@@ -24,7 +24,7 @@ function Header() {
     <div>
       <div className="navbar bg-base-300 shadow-sm">
         <div className="flex-1 border-none">
-          <Link to="/" className="">
+          <Link to={userData ? "/" : "/login"} className="">
             <img
               src={logo}
               alt="Logo"
