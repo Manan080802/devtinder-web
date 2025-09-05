@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addUser } from "../utils/userSlice";
 import useFetchUser from "../utils/useFetchUser";
+import { defaultImages } from "../config/defaultImages";
 import api from "../axios/api";
 
 const UpdateProfile = () => {
@@ -24,12 +25,12 @@ const UpdateProfile = () => {
   const [backendError, setBackendError] = useState("");
   const [previewImage, setPreviewImage] = useState(""); // ✅ image preview
 
-  // Default images based on gender
-  const defaultImages = {
-    male: "https://cdn-icons-png.flaticon.com/512/147/147144.png",
-    female: "https://cdn-icons-png.flaticon.com/512/2922/2922561.png",
-    other: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
-  };
+  // // Default images based on gender
+  // const defaultImages = {
+  //   male: "https://cdn-icons-png.flaticon.com/512/147/147144.png",
+  //   female: "https://cdn-icons-png.flaticon.com/512/2922/2922561.png",
+  //   other: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+  // };
 
   // ✅ Fill form when userData arrives
   useEffect(() => {
