@@ -14,12 +14,36 @@ const Profile = () => {
     );
   }
 
+  // Default images based on gender
+  const defaultImages = {
+    male: "https://cdn-icons-png.flaticon.com/512/147/147144.png",
+    female: "https://cdn-icons-png.flaticon.com/512/2922/2922561.png",
+    other: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+  };
+
+  const profileImage =
+    userData.profileImg ||
+    (userData.gender?.toLowerCase() === "male"
+      ? defaultImages.male
+      : userData.gender?.toLowerCase() === "female"
+      ? defaultImages.female
+      : defaultImages.other);
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4">
       <div className="w-full max-w-md bg-base-300 rounded-2xl shadow-2xl p-6">
-        <h2 className="text-2xl font-bold text-white text-center mb-4">
-          My Profile
-        </h2>
+        <div className="flex flex-col items-center">
+          {/* Profile Image */}
+          <img
+            src={profileImage}
+            alt="Profile"
+            className="w-24 h-24 rounded-full border-4 border-gray-700 shadow-lg mb-4 object-cover"
+          />
+
+          <h2 className="text-2xl font-bold text-white text-center mb-4">
+            My Profile
+          </h2>
+        </div>
 
         <div className="space-y-4 text-gray-200">
           <p>
