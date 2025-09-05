@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addUser } from "../utils/userSlice";
-import useFetchUser from "../utils/useFetchUser"; // ✅ import hook
+import useFetchUser from "../utils/useFetchUser";
 import api from "../axios/api";
 
 const UpdateProfile = () => {
@@ -15,12 +15,21 @@ const UpdateProfile = () => {
     lastName: "",
     gender: "",
     dob: "",
+    profileImg: "", // ✅ add profile image
   });
 
   const [skill, setSkills] = useState([]);
   const [skillInput, setSkillInput] = useState("");
   const [errors, setErrors] = useState({});
   const [backendError, setBackendError] = useState("");
+  const [previewImage, setPreviewImage] = useState(""); // ✅ image preview
+
+  // Default images based on gender
+  const defaultImages = {
+    male: "https://cdn-icons-png.flaticon.com/512/147/147144.png",
+    female: "https://cdn-icons-png.flaticon.com/512/2922/2922561.png",
+    other: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+  };
 
   // ✅ Fill form when userData arrives
   useEffect(() => {
@@ -32,14 +41,35 @@ const UpdateProfile = () => {
         dob: userData.dob
           ? new Date(userData.dob).toISOString().split("T")[0]
           : "",
+        profileImg: userData.profileImg || "",
       });
       setSkills(userData.skill || []);
+
+      // Show preview (uploaded image or default)
+      setPreviewImage(
+        userData.profileImg && userData.profileImg.trim() !== ""
+          ? userData.profileImg
+          : userData.gender?.toLowerCase() === "male"
+          ? defaultImages.male
+          : userData.gender?.toLowerCase() === "female"
+          ? defaultImages.female
+          : defaultImages.other
+      );
     }
   }, [userData]);
 
   // ✅ Handle form input
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // ✅ Handle profile image upload
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData({ ...formData, profileImg: file });
+      setPreviewImage(URL.createObjectURL(file)); // preview before upload
+    }
   };
 
   // ✅ Add skill
@@ -107,11 +137,21 @@ const UpdateProfile = () => {
     if (!validateForm()) return;
 
     try {
-      const result = await api.patch(
-        "/user/profile",
-        { ...formData, skill },
-        { withCredentials: true }
-      );
+      const formDataToSend = new FormData();
+      formDataToSend.append("firstName", formData.firstName);
+      formDataToSend.append("lastName", formData.lastName);
+      formDataToSend.append("gender", formData.gender);
+      formDataToSend.append("dob", formData.dob);
+      formDataToSend.append("skill", JSON.stringify(skill));
+
+      if (formData.profileImg instanceof File) {
+        formDataToSend.append("profileImg", formData.profileImg); // ✅ send file
+      }
+
+      const result = await api.patch("/user/profile", formDataToSend, {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       dispatch(addUser(result.data.result));
       navigate("/profile");
@@ -145,6 +185,29 @@ const UpdateProfile = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Profile Image */}
+          <div className="flex flex-col items-center">
+            <img
+              src={previewImage}
+              alt="Profile"
+              className="w-24 h-24 rounded-full border-4 border-gray-700 shadow-lg mb-2 object-cover"
+              onError={(e) => {
+                e.currentTarget.src =
+                  formData.gender?.toLowerCase() === "male"
+                    ? defaultImages.male
+                    : formData.gender?.toLowerCase() === "female"
+                    ? defaultImages.female
+                    : defaultImages.other;
+              }}
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="file-input file-input-bordered w-full mt-2"
+            />
+          </div>
+
           {/* First Name */}
           <div>
             <label className="label text-sm">First Name</label>
