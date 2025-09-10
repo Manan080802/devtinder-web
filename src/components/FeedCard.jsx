@@ -1,11 +1,49 @@
 import React from "react";
+import { defaultImages } from "../config/defaultImages";
+import { useDispatch } from "react-redux";
+import { removeFeedUser } from "../utils/feedSlice";
+import api from "../axios/api";
+import status from "daisyui/components/status";
 
-const FeedCard = ({ user, onLike, onDislike }) => {
+const FeedCard = ({ user }) => {
+  const disPatch = useDispatch();
   if (!user) return null;
 
   const profileImage =
-    user.profileImg || "https://via.placeholder.com/300x200.png?text=No+Image";
+    user.profileImg ||
+    (user.gender?.toLowerCase() === "male"
+      ? defaultImages.male
+      : user.gender?.toLowerCase() === "female"
+      ? defaultImages.female
+      : defaultImages.other);
 
+  const handleAction = async (action) => {
+    try {
+      if (action === "reject") {
+        const result = await api.post(
+          `/request/send/ignored/${user._id}`,
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+      }
+
+      if (action === "accept") {
+        const result = await api.post(
+          `/request/send/interested/${user._id}`,
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+      }
+
+      disPatch(removeFeedUser(user._id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="p-6 bg-base-200 rounded-2xl shadow-xl w-96 text-center">
       {/* User Image */}
@@ -36,18 +74,59 @@ const FeedCard = ({ user, onLike, onDislike }) => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex justify-around mt-4">
+      <div className="flex justify-center gap-6 mt-6">
+        {/* Reject Button */}
         <button
-          onClick={onDislike}
-          className="btn btn-error text-white rounded-full w-14 h-14 text-lg"
+          onClick={() => {
+            handleAction("reject");
+          }}
+          className="btn btn-error text-white px-6 shadow-lg 
+               hover:scale-105 active:scale-95 
+               transition-all duration-200 flex items-center gap-2"
         >
-          ❌
+          {/* X Icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+          Reject
         </button>
+
+        {/* Accept Button */}
         <button
-          onClick={onLike}
-          className="btn btn-success text-white rounded-full w-14 h-14 text-lg"
+          onClick={() => {
+            handleAction("accept");
+          }}
+          className="btn btn-success text-white px-6 shadow-lg 
+               hover:scale-105 active:scale-95 
+               transition-all duration-200 flex items-center gap-2"
         >
-          ❤️
+          {/* Check Icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 12.75l6 6 9-13.5"
+            />
+          </svg>
+          Accept
         </button>
       </div>
     </div>

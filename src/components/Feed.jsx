@@ -1,38 +1,23 @@
-import React, { useEffect } from "react";
+import React from "react";
 import FeedCard from "./FeedCard";
-import { useDispatch, useSelector } from "react-redux";
-import api from "../axios/api";
-import { addFeedUser } from "../utils/feedSlice";
+import useFeedData from "../utils/useFeedData";
 
-const useFeedData = () => {
-  const disPatch = useDispatch();
-  const getResult = async () => {
-    try {
-      const result = await api.get("/user/feed", {
-        withCredentials: true,
-        params: { pageNumber: 1, limit: 5 },
-      });
-      disPatch(addFeedUser(result?.data?.result));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  const feedData = useSelector((state) => state.feed.data);
-  useEffect(() => {
-    feedData.length == 0 && getResult();
-  }, [feedData]);
-  return feedData;
-};
 const Feed = () => {
-  const FeedData = useSelector((state) => state.feed.data);
-  useFeedData();
-  // pick a random user
-  const randomIndex = Math.floor(Math.random() * FeedData.length);
-  const randomUser = FeedData[randomIndex];
+  const { feedData, loading, error } = useFeedData();
+
+  if (loading) return <h1 className="text-center">Loading...</h1>;
+  if (error)
+    return <h1 className="text-center text-red-500">Error loading feed</h1>;
+  if (!feedData || feedData.length === 0)
+    return <h1 className="text-center">No data</h1>;
+
+  // Pick a random user
+  const randomIndex = Math.floor(Math.random() * feedData.length);
+  const randomUser = feedData[randomIndex];
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-base-100">
-      <FeedCard user={randomUser}></FeedCard>
+      <FeedCard user={randomUser} />
     </div>
   );
 };
